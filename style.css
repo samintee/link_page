@@ -95,11 +95,19 @@ h1 {
     flex-shrink: 0;
 }
 
-.dot-news    { background: #f87171; }
-.dot-tech    { background: #60a5fa; }
-.dot-sports  { background: #34d399; }
-.dot-blogs   { background: #a78bfa; }
-.dot-work    { background: #fbbf24; }
+.dot-investing    { background: #fbbf24; }
+.dot-sports       { background: #34d399; }
+.dot-books        { background: #f59e0b; }
+.dot-occult       { background: #c084fc; }
+.dot-psychedelics { background: #f472b6; }
+.dot-programming  { background: #60a5fa; }
+.dot-design       { background: #fb923c; }
+.dot-taxi         { background: #94a3b8; }
+.dot-business     { background: #6366f1; }
+.dot-housing      { background: #4ade80; }
+.dot-music        { background: #e879f9; }
+.dot-tech         { background: #38bdf8; }
+.dot-health       { background: #f87171; }
 
 /* Main content */
 #main {
@@ -119,11 +127,19 @@ h1 {
     border-bottom: 1px solid #2d3148;
 }
 
-.main-header.news    { color: #f87171; }
-.main-header.tech    { color: #60a5fa; }
-.main-header.sports  { color: #34d399; }
-.main-header.blogs   { color: #a78bfa; }
-.main-header.work    { color: #fbbf24; }
+.main-header.investing    { color: #fbbf24; }
+.main-header.sports       { color: #34d399; }
+.main-header.books        { color: #f59e0b; }
+.main-header.occult       { color: #c084fc; }
+.main-header.psychedelics { color: #f472b6; }
+.main-header.programming  { color: #60a5fa; }
+.main-header.design       { color: #fb923c; }
+.main-header.taxi         { color: #94a3b8; }
+.main-header.business     { color: #6366f1; }
+.main-header.housing      { color: #4ade80; }
+.main-header.music        { color: #e879f9; }
+.main-header.tech         { color: #38bdf8; }
+.main-header.health       { color: #f87171; }
 
 #main ul {
     list-style: none;
