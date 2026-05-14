@@ -1,5 +1,3 @@
-const STORAGE_KEY = 'homepage_links';
-
 const defaults = [
     { id: 'investing', label: 'Investing', links: [
         { name: 'Sijoittaja.fi',        url: 'http://www.sijoittaja.fi/' },
@@ -174,28 +172,17 @@ const defaults = [
     ]},
 ];
 
-function load() {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    return stored ? JSON.parse(stored) : defaults;
-}
-
-function save(data) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-}
-
-let selectedId = null;
+let selectedId = defaults[0].id;
 
 function render() {
-    const data = load();
-    if (!selectedId) selectedId = data[0].id;
-    buildSidebar(data);
-    buildMain(data);
+    buildSidebar();
+    buildMain();
 }
 
-function buildSidebar(data) {
+function buildSidebar() {
     const sidebar = document.getElementById('sidebar');
     sidebar.innerHTML = '';
-    data.forEach(cat => {
+    defaults.forEach(cat => {
         const btn = document.createElement('button');
         btn.className = 'sidebar-item' + (cat.id === selectedId ? ' active' : '');
         btn.innerHTML = `<span class="sidebar-dot dot-${cat.id}"></span>${cat.label}`;
@@ -207,11 +194,11 @@ function buildSidebar(data) {
     });
 }
 
-function buildMain(data) {
+function buildMain() {
     const main = document.getElementById('main');
     main.innerHTML = '';
 
-    const cat = data.find(c => c.id === selectedId);
+    const cat = defaults.find(c => c.id === selectedId);
     if (!cat) return;
 
     const h2 = document.createElement('h2');
@@ -220,145 +207,17 @@ function buildMain(data) {
     main.appendChild(h2);
 
     const ul = document.createElement('ul');
-    cat.links.forEach((link, i) => ul.appendChild(buildLink(link, i, cat, data)));
+    cat.links.forEach(link => {
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        a.href = link.url;
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
+        a.textContent = link.name;
+        li.appendChild(a);
+        ul.appendChild(li);
+    });
     main.appendChild(ul);
-
-    const addBtn = document.createElement('button');
-    addBtn.className = 'add-btn';
-    addBtn.textContent = '+ Add link';
-    addBtn.addEventListener('click', () => showAddForm(main, ul, addBtn, cat, data));
-    main.appendChild(addBtn);
 }
 
-function buildLink(link, index, cat, data) {
-    const li = document.createElement('li');
-
-    const a = document.createElement('a');
-    a.href = link.url;
-    a.target = '_blank';
-    a.rel = 'noopener noreferrer';
-    a.textContent = link.name;
-
-    const removeBtn = document.createElement('button');
-    removeBtn.className = 'remove-btn';
-    removeBtn.textContent = '×';
-    removeBtn.setAttribute('aria-label', `Remove ${link.name}`);
-    removeBtn.addEventListener('click', e => {
-        e.preventDefault();
-        cat.links.splice(index, 1);
-        save(data);
-        render();
-    });
-
-    li.appendChild(a);
-    li.appendChild(removeBtn);
-    return li;
-}
-
-function showAddForm(catDiv, ul, addBtn, cat, data) {
-    if (catDiv.querySelector('.add-form')) return;
-
-    const form = document.createElement('div');
-    form.className = 'add-form';
-
-    const nameInput = document.createElement('input');
-    nameInput.type = 'text';
-    nameInput.placeholder = 'Name';
-
-    const urlInput = document.createElement('input');
-    urlInput.type = 'text';
-    urlInput.placeholder = 'URL';
-
-    const confirmBtn = document.createElement('button');
-    confirmBtn.className = 'confirm-btn';
-    confirmBtn.textContent = '✓';
-
-    const cancelBtn = document.createElement('button');
-    cancelBtn.className = 'cancel-btn';
-    cancelBtn.textContent = '×';
-
-    function submit() {
-        const name = nameInput.value.trim();
-        let url = urlInput.value.trim();
-        if (!name || !url) return;
-        if (!/^https?:\/\//i.test(url)) url = 'https://' + url;
-        cat.links.push({ name, url });
-        save(data);
-        render();
-    }
-
-    function cancel() {
-        form.remove();
-    }
-
-    confirmBtn.addEventListener('click', submit);
-    cancelBtn.addEventListener('click', cancel);
-
-    [nameInput, urlInput].forEach(input => {
-        input.addEventListener('keydown', e => {
-            if (e.key === 'Enter') submit();
-            if (e.key === 'Escape') cancel();
-        });
-    });
-
-    form.appendChild(nameInput);
-    form.appendChild(urlInput);
-    form.appendChild(confirmBtn);
-    form.appendChild(cancelBtn);
-
-    catDiv.insertBefore(form, addBtn);
-    nameInput.focus();
-}
-
-function exportLinks() {
-    const data = load();
-    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = 'links.json';
-    a.click();
-    URL.revokeObjectURL(a.href);
-}
-
-function importLinks(file) {
-    const reader = new FileReader();
-    reader.onload = e => {
-        try {
-            const data = JSON.parse(e.target.result);
-            save(data);
-            render();
-        } catch {
-            alert('Invalid JSON file.');
-        }
-    };
-    reader.readAsText(file);
-}
-
-function buildToolbar() {
-    const toolbar = document.getElementById('toolbar');
-
-    const exportBtn = document.createElement('button');
-    exportBtn.className = 'toolbar-btn';
-    exportBtn.textContent = 'Export';
-    exportBtn.addEventListener('click', exportLinks);
-
-    const importLabel = document.createElement('label');
-    importLabel.className = 'toolbar-btn';
-    importLabel.textContent = 'Import';
-
-    const fileInput = document.createElement('input');
-    fileInput.type = 'file';
-    fileInput.accept = '.json';
-    fileInput.style.display = 'none';
-    fileInput.addEventListener('change', e => {
-        if (e.target.files[0]) importLinks(e.target.files[0]);
-        fileInput.value = '';
-    });
-
-    importLabel.appendChild(fileInput);
-    toolbar.appendChild(exportBtn);
-    toolbar.appendChild(importLabel);
-}
-
-buildToolbar();
 render();
