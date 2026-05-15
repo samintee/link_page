@@ -39,7 +39,6 @@ const defaults = [
         { name: 'FBref',                 url: 'https://fbref.com/en/' },
         { name: 'Flashscore',            url: 'https://www.flashscore.fi/' },
         { name: "James' Blog (metrics)", url: 'http://jameswgrayson.wordpress.com/2013/10/31/which-metrics-are-the-most-repeatable-between-the-first-9-and-final-29-games-of-the-season/' },
-        { name: 'Football Analytics NB', url: 'https://github.com/eddwebster/football_analytics/blob/master/notebooks/3_data_engineering/FBref%20Player%20Stats%20Data%20Engineering.ipynb' },
         { name: 'Jeff Sackmann (GitHub)', url: 'https://github.com/JeffSackmann?tab=overview&from=2026-04-01&to=2026-04-30' },
     ]},
     { id: 'books', label: 'Books & Libraries', links: [
@@ -60,7 +59,6 @@ const defaults = [
         { name: 'Luke Smith',            url: 'https://lukesmith.xyz/' },
     ]},
     { id: 'psychedelics', label: 'Psychedelics', links: [
-        { name: 'Psilosybiini.info',     url: 'https://psilosybiini.info/keskustelu/index.php' },
         { name: 'Shroomery',             url: 'https://www.shroomery.org/' },
         { name: 'DMT-Nexus',             url: 'https://www.dmt-nexus.me/forum/default.aspx?g=forum' },
         { name: 'Elephantos',            url: 'https://www.elephantos.com/en/smart-shop/psychedelics' },
